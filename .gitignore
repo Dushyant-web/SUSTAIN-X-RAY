@@ -1,0 +1,11 @@
+node_modules/
+frontend/dist/
+.env
+.env.*
+!.env.example
+*.sqlite*
+__pycache__/
+.pytest_cache/
+.venv/
+tmp/
+*.tsbuildinfo

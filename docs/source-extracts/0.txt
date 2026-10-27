@@ -1,0 +1,549 @@
+          SUSTAIN-X-RAY
+          Campus Resource Intelligence Platform
+
+
+
+
+          Electricity + Water | Hinglish Guide
+          Resource wastage ko detect karo, possible causes samjho, corrective action
+          suggest karo aur impact verify karo.
+
+
+
+
+          END-TO-END PROJECT BLUEPRINT
+
+
+          Concept • Diagrams • Data • Software Architecture • Savings Scenarios •
+          Roadmap
+
+
+
+
+Document ka purpose: Is PDF mein bataya gaya hai ki Sustain-X-Ray kya karega, kaise data lega, kaise analysis karega,
+software kaise banega aur potential savings ko kaise measure karenge.
+Yeh proposed design hai, deployed product ya verified energy/water audit nahi. Electricity bill figures uploaded NPCL bills ke discussion se liye gaye
+hain. Water readings aur meter connectivity ki kuch details abhi verify karni baaki hain.
+  Is PDF mein kya hai?
+    No.             Section
+
+    1               Project ka idea aur objective
+
+    2               Recommended hardware architecture
+
+    3               Complete software system architecture
+
+    4               AI/data processing flow
+
+    5               Electricity: current bills aur analysis
+
+    6               Potential savings scenarios
+
+    7               Water monitoring: RO + Blocks 1, 2, 3
+
+    8               Software ke pages aur features
+
+    9               Recommended technology stack
+
+    10              Database structure
+
+    11              Alerts, root-cause analysis aur verification
+
+    12              Hardware/budget planning
+
+    13              End-to-end development roadmap
+
+    14              Risks, validation aur success metrics
+
+
+
+
+Sustain-X-Ray | Hinglish Project Blueprint                         Page 2
+  1. Project ka idea — hum kya bana rahe hain?
+  Sustain-X-Ray ek campus-focused platform hai jo university ki electricity aur water consumption ko ek jagah monitor
+  karega. System unusual usage ko flag karega, possible reasons evidence ke saath dikhayega, corrective actions suggest
+  karega aur action ke baad check karega ki usage ya cost mein actual improvement aaya ya nahi.
+
+  Hamari core approach: Measure → Detect → Explain → Act → Verify. Sirf graph dikhana goal nahi hai; data ko practical
+  campus action aur measured result se connect karna goal hai.
+
+    Stage                        System kya karega?
+
+    Measure                      Electricity bills/smart meter readings aur RO/block water readings collect karega.
+
+    Detect                       Baseline ke comparison mein unusual spikes, night usage ya water-balance gaps flag karega.
+
+    Explain                      Possible causes aur supporting evidence dikhayega; cause ko fact tabhi bolega jab evidence ho.
+
+    Act                          Recommended checks, maintenance ticket aur responsible person assign karne ka workflow.
+
+    Verify                       Action ke pehle/baad comparable data dekhkar saving ko verified, estimated ya inconclusive label
+                                 karega.
+
+  Current reality
+  • Electricity: June, July aur August 2026 ke university-wide NPCL bills available hain.
+  • Water: RO logbook readings discuss hui hain; flow/rejected flow litres mein hain, lekin readings ka time interval/cumulative
+  nature confirm karna hai.
+  • Lab-wise electricity: abhi individual lab readings confirm nahi hui hain. University-wide bill se lab-specific wastage identify
+  nahi kiya ja sakta.
+  • Live data: compatible meter interface/gateway ya sensors confirm hone ke baad hi automatic monitoring possible hogi.
+
+
+
+
+Sustain-X-Ray | Hinglish Project Blueprint                                                                                     Page 3
+  2. Recommended hardware architecture
+  Water side par proposed measurement points RO input, usable/product output, rejected water aur Blocks 1, 2, 3 ke inlet
+  hain. Final meter placement existing pipes, tanks aur already-installed meters dekhkar decide hoga.
+
+                                                                   RO PLANT
+                                         Raw water inlet → RO treatment → usable water + rejected water
+
+
+                                                                         ↓
+    Measurement point                                                    Kya measure karega?
+
+    Raw-water flow meter                                                 RO process mein enter hone wala paani.
+
+    Product-water flow meter                                             RO se nikalne wala usable paani.
+
+    Rejected-water flow meter                                            RO process se reject hone wala paani, agar direct
+                                                                         measurement required ho.
+
+                                                                         ↓
+
+                                                      DATA LOGGER / IoT GATEWAY
+                                        Compatible meters se readings collect karke backend tak bhejega
+
+
+                                                                         ↓
+
+                                                       SUSTAIN-X-RAY DASHBOARD
+                                               RO efficiency • water balance • unusual usage • alerts
+
+
+
+  Block-wise water monitoring
+    Block                          Measurement                               Purpose
+
+    Block 1                        Block inlet flow                          Block 1 ka usage trend aur unusual increase.
+
+    Block 2                        Block inlet flow                          Block 2 ka usage trend aur unusual increase.
+
+    Block 3                        Block inlet flow                          Block 3 ka usage trend aur unusual increase.
+
+  Important: agar RO water common underground/overhead tank mein store hota hai, tank level aur flow timing water balance
+  ko affect kar sakte hain. Pipe layout dekhe bina meter location final nahi karni chahiye.
+
+
+
+
+Sustain-X-Ray | Hinglish Project Blueprint                                                                                   Page 4
+  3. Complete software system architecture
+  Software ka data flow is tarah hoga. Shuru mein manual entry/CSV aur bill data se MVP ban sakta hai; baad mein
+  compatible smart meters aur flow meters connect honge.
+
+                                                                    DATA SOURCES
+                                  Electricity smart meter/export • NPCL bills • RO logbook • Water flow meters
+
+
+                                                                         ↓
+
+                                                             DATA INGESTION LAYER
+                                      Manual entry • CSV import • meter adapters • validation • timestamps
+
+
+                                                                         ↓
+
+                                                          FASTAPI ANALYTICS ENGINE
+                                        Baseline • anomaly detection • water balance • savings calculation
+
+
+                                                                         ↓
+    FIRESTORE DATABASE                                                       ALERT ENGINE
+
+    Readings, bills, meters, users, tickets, verification history            Severity, evidence, possible causes, suggested actions
+
+
+                                                                         ↓
+
+                                                            REACT WEB APPLICATION
+                                         Dashboard • Analytics • Alerts • Maintenance • Reports • Settings
+
+
+  Data ingestion aur analytics backend ki responsibility hai. React interface user ko readings, trends, alerts aur action
+  workflow dikhayega. Firestore data store karega. Live integration ke liye meter-specific adapter/gateway chahiye hoga.
+
+
+
+
+Sustain-X-Ray | Hinglish Project Blueprint                                                                                            Page 5
+  4. AI / data processing flow
+                                     EXISTING SMART METER DATA / BILL / WATER LOGBOOK
+                                                              Available readings
+
+
+                                                                       ↓
+
+                                                           DATA PROCESSING
+                                              Cleaning • validation • unit checks • time alignment
+
+
+                                                                       ↓
+
+                                                         ANOMALY DETECTION
+                                                 Unusual usage ko baseline se compare karna
+
+
+                                                                       ↓
+
+                                                        ROOT-CAUSE ANALYSIS
+                                             Contextual evidence + possible reasons + uncertainty
+
+
+                                                                       ↓
+
+                                              RECOMMENDATION & IMPACT ESTIMATE
+                                                   Suggested checks/fix + possible impact
+
+
+                                                                       ↓
+
+                                                    MAINTENANCE & VERIFICATION
+                                             Ticket tracking + before/after outcome measurement
+
+
+                                                                       ↓
+
+                                                    SUSTAINABILITY DASHBOARD
+                                Resource trends • verified improvements • building-wise view when data exists
+
+
+
+  AI ko pehle din se complex model banana zaroori nahi. MVP mein transparent threshold/baseline rules se start karenge.
+  Jab enough reliable historical data hoga tab more advanced models evaluate karenge. AI ke possible causes ko confirmed
+  root cause ke roop mein present nahi karna chahiye.
+
+
+
+
+Sustain-X-Ray | Hinglish Project Blueprint                                                                           Page 6
+  5. Electricity: available bills ka baseline
+  Uploaded NPCL bills ke page 1 se transcribed figures (conversation mein discussed values):
+
+    Bill month                 Consumption                 Total bill                        Approx. bill / kWh
+
+    June 2026                  2,375,883.48 kWh            ■2,22,10,232                      ■9.35
+
+    July 2026                  3,008,147.23 kWh            ■2,92,53,532                      ■9.72
+
+    August 2026                3,135,321.59 kWh            ■3,05,45,123                      ■9.74
+
+
+  Month-to-month change
+    Comparison                       Change             Interpretation
+
+    June → July                      +26.61%            Consumption increase ko investigate karna hai; ye akela wastage ka
+                                                        proof nahi.
+
+    July → August                    +4.23%             Increase continue hua; operating hours, weather, occupancy aur
+                                                        calendar check karna hoga.
+
+  Approx. bill/kWh total bill ko billed units se divide karke aata hai. Ismein non-energy charges/adjustments bhi ho sakte hain;
+  ise exact energy tariff nahi samajhna. Monthly bill periods calendar months se match karein, yeh bhi verify karna hoga.
+
+  In bills se kya possible hai?
+  • University-level month-to-month trend.
+  • Total cost aur consumption chart.
+  • Bill increase ko flag karna.
+  • Maximum-demand tracking, subject to bill field verification.
+  • Historical baseline ki initial shuruaat.
+
+  Kya possible nahi hai?
+  Sirf university-wide bills se kisi particular lab ya building ko responsible nahi bataya ja sakta. Uske liye building/lab submeter
+  readings ya sufficiently granular meter data chahiye.
+
+
+
+
+Sustain-X-Ray | Hinglish Project Blueprint                                                                                      Page 7
+  6. Kitni savings possible ho sakti hai?
+  Neeche ke numbers illustrative scenarios hain: uploaded bills mein total monthly bill roughly ■2.22 crore–■3.05 crore raha.
+  Hum us range par percentage apply karke scale samajh rahe hain. Yeh actual forecast, guaranteed saving ya measured
+  result nahi hai.
+
+    Scenario                                 Illustrative monthly amount                         Annualized equivalent*
+
+    2% reduction                             ■4.44–6.11 lakh                                     ■0.53–0.73 crore
+
+    5% reduction                             ■11.11–15.27 lakh                                   ■1.33–1.83 crore
+
+    10% reduction                            ■22.21–30.55 lakh                                   ■2.67–3.67 crore
+
+  *Annualized equivalent monthly range ko 12 se multiply karta hai. Seasonality, fixed demand charges, tariff changes aur bill ke components ka effect is
+  calculation mein model nahi hua.
+
+  Savings ka claim kaise prove hoga?
+  1. Pehle comparable time window ka baseline set karenge.
+  2. System unusual usage detect karega aur staff action lega.
+  3. Action ke baad same type ke comparable period ka consumption dekhenge.
+  4. Occupancy, weather, hours ya tariff jaise changes ko note karenge.
+  5. Evidence sufficient hua toh saving verified; warna estimated ya inconclusive label hogi.
+
+  Measured kWh saving = adjusted baseline kWh − post-action actual kWh. Financial saving ko applicable marginal energy
+  rate aur demand-charge effects ko dhyan mein rakhkar calculate karna chahiye.
+
+  Water savings ka rupee estimate abhi nahi dena chahiye, kyunki reliable water consumption/cost totals aur reading intervals
+  confirm nahi hain. Pehle RO input, output, reject aur block readings ko validate karenge.
+
+
+
+
+Sustain-X-Ray | Hinglish Project Blueprint                                                                                                           Page 8
+  7. Water module: formulas aur examples
+  Har water reading ke saath unit, timestamp aur interval zaroor store karenge. Agar logbook cumulative meter reading hai
+  toh per-day use nikalne ke liye successive readings ka difference lenge; agar readings interval totals hain toh unhe directly
+  same interval ke saath compare karenge.
+
+            WATER INPUT = PRODUCT / USABLE OUTPUT + REJECTED WATER + BALANCE DIFFERENCE
+
+
+  RO rejection rate = rejected water ÷ input water × 100%
+  RO recovery rate = usable output ÷ input water × 100%
+  Water balance difference = input − usable output − rejected water
+
+  Agar difference aata hai toh iska matlab automatically leak nahi. Timing mismatch, tank level change, unmetered branches
+  ya sensor error bhi reason ho sakte hain.
+
+  Proposed measurement points
+    Point                           Data/use                                 Dependency
+
+    RO input                        Total feed water                         Flow meter or validated logbook reading.
+
+    RO usable output                Usable production                        Product-flow measurement.
+
+    RO rejected flow                Reject volume and rejection ratio        Confirm reading interval and process arrangement.
+
+    Block 1/2/3                     Block-wise water use                     Block inlet meter(s) and pipe map.
+
+  Optional future sensors: TDS, pressure, tank level. Inko tab add karna jab use-case aur compatible sensor interface confirm
+  ho.
+
+
+
+
+Sustain-X-Ray | Hinglish Project Blueprint                                                                                  Page 9
+  8. Software ke pages aur features
+    Page                                Kya dikhega / kya karega
+
+    Overview                            Combined electricity-water KPIs, latest alerts, trends aur data freshness.
+
+    Electricity                         Bill import, kWh/cost charts, maximum demand, baseline comparison.
+
+    Water                               RO input/output/reject, rejection/recovery, Blocks 1–3 trends.
+
+    Alerts                              Severity, evidence, possible cause, recommended checks and uncertainty.
+
+    Maintenance                         Ticket create/assign, priority, status, notes and resolution.
+
+    Verification                        Before/after periods, estimated savings, verification status.
+
+    Sustainability score                Configurable indicator based on data completeness, resource trends and verified actions.
+
+    Reports                             Monthly report, date filters, CSV export and intervention history.
+
+    Admin settings                      Users/roles, buildings, meters, thresholds, tariff and data source settings.
+
+  Example user journey
+  Reading upload → data validation → baseline comparison → alert with evidence → operator review → maintenance ticket
+  → corrective action → before/after comparison → verified/estimated/inconclusive result.
+
+
+
+
+Sustain-X-Ray | Hinglish Project Blueprint                                                                                         Page 10
+  9. Recommended technology stack
+    Layer                         Technology                                         Kyun?
+
+    Frontend                      React + TypeScript + Vite                          Interactive dashboard aur maintainable UI.
+
+    Styling/charts                Tailwind CSS + component library + Recharts        Consistent design aur charts.
+
+    Login                         Firebase Authentication                            Identity aur sign-in.
+
+    Database                      Firestore                                          Readings, meters, alerts, tickets and verification
+                                                                                     records.
+
+    Backend                       Python + FastAPI                                   Validation, calculations, analytics endpoints.
+
+    Scheduled analysis            Scheduled Python job/task runner                   New data aane par configured interval par analysis.
+
+    Meter integration             Compatible gateway / vendor API / Modbus / pulse   Hardware protocol meter ke actual model par depend
+                                  adapter
+                                                                                     karega.
+
+    Hosting                       Vercel + suitable backend hosting                  Frontend aur API deployment.
+
+  Simple language mein: React user ko screen dikhayega, FastAPI calculations karega, Firestore records store karega, aur
+  gateway physical meters se readings laayega. Har component ko secure authentication/authorization ke saath connect
+  karna hoga.
+
+
+
+
+Sustain-X-Ray | Hinglish Project Blueprint                                                                                            Page 11
+  10. Database structure
+    Collection                               Main fields (example)
+
+    users                                    uid, name, role, assignedBlocks, active
+
+    buildings                                buildingId, name, blockCode, useType
+
+    meters                                   meterId, resourceType, locationId, unit, dataSource, protocol, intervalType
+
+    readings                                 meterId, timestamp, value, unit, source, interval, qualityFlag
+
+    bills                                    billMonth, billPeriod, kWh, demand, amount, sourceFile
+
+    alerts                                   severity, meterId, evidence, possibleCauses, suggestedActions, status
+
+    maintenanceTickets                       alertId, assignee, priority, status, actionTaken, timestamps
+
+    actionVerifications                      baselineWindow, postActionWindow, values, estimatedSaving, status
+
+    sustainabilitySnapshots                  period, score, components, dataCompleteness
+
+    settings                                 thresholds, tariffs, operating hours, scoring weights
+
+  Har reading ka source store karna zaroori hai: bill, manual, CSV, simulated demo ya live meter. Simulated data ko real
+  campus reading ke saath mix nahi karna.
+
+
+
+
+Sustain-X-Ray | Hinglish Project Blueprint                                                                                 Page 12
+  11. Alert, root-cause aur verification logic
+    Use case                       Initial logic                                          Caution
+
+    Electricity spike              Comparable baseline se zyada use ho toh flag.          Weather, occupancy aur operating hours affect kar
+                                                                                          sakte hain.
+
+    Night usage                    Operating window ke baahar consumption flag, agar      Kuch systems overnight run karte hain.
+                                   interval data ho.
+
+    Bill increase                  kWh, total amount, effective cost/kWh compare.         Tariff aur fixed charges separate karo.
+
+    RO rejection change            Rejected/input ratio ko aligned periods par compare.   Units, TDS, pressure aur process conditions check
+                                                                                          karo.
+
+    Water balance gap              Input ko product + reject ke saath compare.            Tank storage aur unmetered lines ka effect ho
+                                                                                          sakta hai.
+
+    Post-action check              Comparable baseline aur post-action usage              Conditions badle hon toh result inconclusive ho
+                                   compare.
+                                                                                          sakta hai.
+
+  Har alert mein: affected meter/block, time range, observed reading, baseline, deviation, data quality, plausible causes,
+  recommended checks, assigned owner aur ticket/verification status show karenge. Root cause tabhi confirm hoga jab
+  investigation evidence support kare.
+
+
+
+
+Sustain-X-Ray | Hinglish Project Blueprint                                                                                            Page 13
+  12. Hardware aur budget planning
+  Pehle software MVP banaya ja sakta hai, bina naye meters kharide. Live integration se pehle existing meter model, output
+  protocol, pipe sizes, network coverage aur installation locations survey karna hoga.
+
+    Option                                   Indicative estimate         Notes
+
+    Software-only MVP                        Hardware par kam kharcha    Bills + manual/CSV data; live monitoring nahi.
+
+    Water 3-point pilot                      Approx. ■30,000–■80,000     Earlier rough planning estimate, vendor quote nahi.
+
+    Six-point water pilot                    Approx. ■1.2–■2.5 lakh      Meters, gateway, fittings aur installation par depend.
+
+  Yeh rough estimates hain, final quotations nahi. GST, installation work, calibration, recurring hosting aur maintenance alag
+  ho sakte hain. Electricity side ka cost meter compatibility aur kitne submeter points chahiye uske bina estimate nahi karna
+  chahiye.
+
+  Water ke possible 6 points: RO input, usable output, reject flow, Block 1 inlet, Block 2 inlet, Block 3 inlet. Existing
+  instrumentation/pipe layout dekhkar points ki count change ho sakti hai.
+
+
+
+
+Sustain-X-Ray | Hinglish Project Blueprint                                                                                     Page 14
+  13. End-to-end development roadmap
+    Phase                        Kya build karenge?                                             Done kab maana jayega?
+
+    1. Foundation                Repo, React layout, routes, login/roles.                       User secure sign-in kare aur permitted pages
+                                                                                                dekhe.
+
+    2. Data model                Firestore schema, meter config, manual form, CSV import.       Data units/timestamp/source ke saath save ho.
+
+    3. Electricity MVP           June–August bills import, charts, monthly comparison.          Dashboard source bill totals se match kare.
+
+    4. Water MVP                 RO/block forms, unit validation, water calculations.           Aligned readings par calculations test pass
+                                                                                                karein.
+
+    5. Analytics                 Baselines, anomaly rules, explainability template.             Alerts evidence aur uncertainty show karein.
+
+    6. Operations                Maintenance tickets, assignments, action logs, verification.   Alert se resolution tak workflow chale.
+
+    7. Live integration          Compatible meter/gateway connect.                              Agreed frequency par readings aayein; stale
+                                                                                                data visible ho.
+
+    8. Deployment                Hosting, secrets, logs, backups, testing and docs.             Security aur recovery checks pass karein.
+
+  Recommended order
+  Pehle bill + manual/CSV water data ke saath software ka working MVP banao. Phir alert → ticket → verification flow
+  complete karo. Hardware integration tab karo jab actual meter compatibility aur measurement locations confirm ho jayein.
+
+
+
+
+Sustain-X-Ray | Hinglish Project Blueprint                                                                                                  Page 15
+  14. Risks, validation aur success metrics
+  Important checks before live launch
+  • Electricity bill periods, meter multiplier, units, tariff components aur available interval exports verify karo.
+
+  • RO logbook mein readings per hour/day/inspection hain ya cumulative—confirm karo.
+
+  • Water readings ko same interval aur units mein compare karo; tank-level change ko consider karo.
+
+  • Occupancy, academic calendar, operating hours, weather aur equipment changes ko possible context ke roop mein record
+  karo.
+
+  • Configurable thresholds aur human review se start karo; real data par false alerts tune karo.
+
+  • Role-based access, secure API secrets, Firestore rules, audit trail aur backups implement karo.
+
+  • Har alert ke liye responsible team/owner aur closure workflow define karo.
+
+  • Savings ko verified tabhi bolo jab baseline aur post-action data comparable aur sufficiently complete ho.
+
+  • Data completeness and freshness.
+  • Alert precision after human review (kitne alerts genuinely actionable the).
+  • Time from alert to review and resolution.
+  • Number of completed corrective actions.
+  • Verified kWh and water-volume reduction.
+  • Verified financial savings, separately from estimated savings.
+  • False-positive rate and unresolved data-quality issues.
+
+
+
+
+  Final summary
+  Sustain-X-Ray ka goal campus resource data ko actionable decisions aur measurable improvements mein badalna hai.
+  Available bills overall electricity trend ki shuruaat dete hain; lab/building-level diagnosis aur reliable savings claims ke liye
+  granular data, validated baseline, corrective action aur post-action measurement chahiye.
+  Source/assumption note: Electricity figures wohi values hain jo uploaded NPCL bills ke page 1 se pehle discussion mein transcribe ki gayi thi. Final
+  implementation se pehle original PDFs se figures aur billing periods dobara verify karna best rahega. Water, meter connectivity aur hardware budget
+  abhi preliminary hain.
+
+
+
+
+Sustain-X-Ray | Hinglish Project Blueprint                                                                                                         Page 16
+
